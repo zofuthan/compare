@@ -1,14 +1,24 @@
-/*
- * Copyright (c) 2013 Dataence, LLC. http://zhen.io. All rights reserved.
- * Use of this source code is governed by the Apache 2.0 license.
- *
- */
+// Copyright (c) 2014 Dataence, LLC. All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 package compare
 
 import (
 	"fmt"
 	"reflect"
+
+	"github.com/surge/glog"
 )
 
 type Comparator func(k1, k2 interface{}) (bool, error)
@@ -129,6 +139,8 @@ func builtinGreaterThan(k1, k2 interface{}) (bool, error) {
 
 func builtinEqual(k1, k2 interface{}) (bool, error) {
 	if reflect.TypeOf(k1) != reflect.TypeOf(k2) {
+		glog.Debugf("skiplist/BuiltinEqual: k1.(%s) and k2.(%s) have different types",
+			reflect.TypeOf(k1).Name(), reflect.TypeOf(k2).Name())
 		return false, fmt.Errorf("skiplist/BuiltinEqual: k1.(%s) and k2.(%s) have different types",
 			reflect.TypeOf(k1).Name(), reflect.TypeOf(k2).Name())
 	}
@@ -177,6 +189,8 @@ func builtinEqual(k1, k2 interface{}) (bool, error) {
 		return k1 == k2.(uintptr), nil
 	}
 
+	glog.Debugf("skiplist/BuiltinLessThan: unsupported types for k1.(%s) and k2.(%s)",
+		reflect.TypeOf(k1).Name(), reflect.TypeOf(k2).Name())
 	return false, fmt.Errorf("skiplist/BuiltinLessThan: unsupported types for k1.(%s) and k2.(%s)",
 		reflect.TypeOf(k1).Name(), reflect.TypeOf(k2).Name())
 }
