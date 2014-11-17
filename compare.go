@@ -17,8 +17,6 @@ package compare
 import (
 	"fmt"
 	"reflect"
-
-	"github.com/surge/glog"
 )
 
 type Comparator func(k1, k2 interface{}) (bool, error)
@@ -139,8 +137,6 @@ func builtinGreaterThan(k1, k2 interface{}) (bool, error) {
 
 func builtinEqual(k1, k2 interface{}) (bool, error) {
 	if reflect.TypeOf(k1) != reflect.TypeOf(k2) {
-		glog.Debugf("skiplist/BuiltinEqual: k1.(%s) and k2.(%s) have different types",
-			reflect.TypeOf(k1).Name(), reflect.TypeOf(k2).Name())
 		return false, fmt.Errorf("skiplist/BuiltinEqual: k1.(%s) and k2.(%s) have different types",
 			reflect.TypeOf(k1).Name(), reflect.TypeOf(k2).Name())
 	}
@@ -189,8 +185,6 @@ func builtinEqual(k1, k2 interface{}) (bool, error) {
 		return k1 == k2.(uintptr), nil
 	}
 
-	glog.Debugf("skiplist/BuiltinLessThan: unsupported types for k1.(%s) and k2.(%s)",
-		reflect.TypeOf(k1).Name(), reflect.TypeOf(k2).Name())
 	return false, fmt.Errorf("skiplist/BuiltinLessThan: unsupported types for k1.(%s) and k2.(%s)",
 		reflect.TypeOf(k1).Name(), reflect.TypeOf(k2).Name())
 }
